@@ -1,0 +1,21 @@
+{
+  "name": "lurker-lite",
+  "version": "1.0.0",
+  "description": "A reddit lurker newsletter API.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//enjoythelive1/lurker-lite.git"
+  },
+  "keywords": [
+    "reddit",
+    "subreddit",
+    "newsletter"
+  ],
+  "author": "Fausto A. Guerrero <enjoythelive1@gmail.com>",
+  "license": "UNLICENCED"
+}
