@@ -1,3 +1,5 @@
-const path = require('path');
+const restAPI = require('./rest-API');
 
-console.log(path.join('/as', 'as/df'));
+const server = restAPI.listen(process.env.PORT || 8080, () => {
+  console.log(`Serving on port ${server.address().port}`);
+});

@@ -1,5 +1,7 @@
 const fs = require('fs/promises');
 const path = require('path');
+const NotFoundError = require('./errors/not-found');
+const ConflictError = require('./errors/conflict-error');
 
 const dataPath = path.join(__dirname, '../../data/subscribers');
 
@@ -48,20 +50,28 @@ async function create(id, content) {
     return;
   }
 
-  throw new Error(`Entry ${id} already exist`);
+  throw new ConflictError(`Entry ${id} already exist`);
 }
 
 async function update(id, content) {
   const filePath = path.join(dataPath, `${id}.json`);
 
-  await fs.access(filePath);
+  await fs.access(filePath).catch((e) => {
+    if (e.code === 'ENOENT') throw new NotFoundError('Not Found', e);
+
+    throw e;
+  });
   await writeJSON(filePath, content);
 }
 
 async function remove(id) {
   const filePath = path.join(dataPath, `${id}.json`);
 
-  await fs.rm(filePath);
+  await fs.rm(filePath).catch((e) => {
+    if (e.code === 'ENOENT') throw new NotFoundError('Not Found', e);
+
+    throw e;
+  });
 }
 
 module.exports = {
