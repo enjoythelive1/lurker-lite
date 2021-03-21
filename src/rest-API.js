@@ -15,11 +15,14 @@ restAPI.get('/subscribers', asyncHandler(async (req, res) => {
 }));
 
 restAPI.post('/subscribers', asyncHandler(async (req, res) => {
-  const { subreddits, email, active } = req.body;
+  const {
+    subreddits, name, email, active,
+  } = req.body;
 
   try {
     await subscribers.create(email, {
       email,
+      name,
       active: active != null ? active : true,
       subreddits: subreddits || [],
     });
@@ -43,11 +46,12 @@ restAPI.get('/subscribers/:email', asyncHandler(async (req, res) => {
 
 restAPI.put('/subscribers/:email', asyncHandler(async (req, res) => {
   const { email } = req.params;
-  const { subreddits, active } = req.body;
+  const { name, subreddits, active } = req.body;
 
   try {
     await subscribers.update(email, {
       email,
+      name,
       active: active != null ? active : true,
       subreddits: subreddits || [],
     });
