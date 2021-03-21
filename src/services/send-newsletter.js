@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const sgMail = require('@sendgrid/mail');
 const subscribersRepo = require('../repositories/subscribers');
+const createNewsletterMail = require('../emails/newsletter');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -38,11 +39,9 @@ async function getTopPostsForSubreddit(subreddit, token) {
   return response.json();
 }
 
-function createHTMLMailForPosts(postPerSubreddit) {
-  return `<pre><code>${JSON.stringify(postPerSubreddit, null, 2)}</code></pre>`;
-}
-
 async function sendSubscriberTo(subscriber, token) {
+  if (!subscriber.subreddits.length) return;
+
   const postPerSubreddit = (await Promise.all(
     subscriber.subreddits.map(
       async (subreddit) => [subreddit, await getTopPostsForSubreddit(subreddit, token)],
@@ -53,7 +52,7 @@ async function sendSubscriberTo(subscriber, token) {
     to: subscriber.email,
     from: process.env.SENDGRID_SENDER,
     subject: `Lurker Lite newsletter for Reddit for ${new Date().toDateString()}`,
-    html: createHTMLMailForPosts(postPerSubreddit),
+    html: createNewsletterMail(subscriber, postPerSubreddit),
   });
 }
 
