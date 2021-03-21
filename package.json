@@ -31,6 +31,7 @@
     "express-async-handler": "^1.1.4",
     "js-abbreviation-number": "^1.1.2",
     "morgan": "^1.10.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "node-schedule": "^2.0.0"
   }
 }
